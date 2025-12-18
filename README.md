@@ -1,2 +1,517 @@
-# para-mi-niña
-TE AMOO PRECIOSA
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <center></center>
+  <style>
+    :root{
+      --bg:#fff7fb;
+      --card:#ffffff;
+      --accent:#ff6fa3;
+      --muted:#6b6b6b;
+      --glass: rgba(255,255,255,0.6);
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; background:linear-gradient(120deg,#fff7fb 0%, #f7f9ff 100%); color:#222}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:linear-gradient(90deg, rgba(255,111,155,0.08), rgba(255,173,206,0.04));backdrop-filter: blur(4px);}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#ffd0e6);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;box-shadow:0 6px 18px rgba(255,111,155,0.15)}
+    nav{display:flex;gap:10px}
+    nav button{background:transparent;border:0;padding:8px 12px;border-radius:10px;font-weight:600;cursor:pointer}
+    nav button.active{background:var(--accent);color:white;box-shadow:0 6px 18px rgba(255,111,155,0.12)}
+    main{padding:28px;max-width:1000px;margin:24px auto}
+    .card{background:var(--card);padding:20px;border-radius:16px;box-shadow:0 10px 30px rgba(15,15,15,0.06);margin-bottom:18px}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:center}
+    .hero .texto h1{margin:0 0 8px;font-size:28px}
+    .hero .texto p{margin:0;color:var(--muted)}
+    .heart{font-size:42px;color:var(--accent)}
+
+    /* Gallery */
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+    .photo{height:120px;border-radius:10px;background:linear-gradient(180deg,#ffeef6,#fff);display:flex;align-items:center;justify-content:center;color:var(--muted);font-weight:600}
+
+    /* Letters */
+    .letters{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .letter{padding:14px;border-radius:12px;background:linear-gradient(180deg,#fff,#fff7fb);}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Plans */
+    .plans ul{padding-left:18px}
+
+    footer{text-align:center;padding:18px;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width:880px){
+      .hero{grid-template-columns:1fr}
+      .letters{grid-template-columns:1fr}
+      nav{display:none}
+      header{justify-content:space-between}
+      .menu-btn{display:inline-flex}
+    }
+
+    /* Floating nav on mobile */
+    .mobile-nav{display:none;position:fixed;right:18px;bottom:18px}
+    .menu-btn{display:none;background:var(--accent);border:0;padding:12px;border-radius:50%;color:white}
+    @media (max-width:880px){.mobile-nav{display:block}}
+
+    .hidden{display:none}
+
+    /* Small touches */
+    .shadow-soft{box-shadow:0 6px 22px rgba(15,15,15,0.06)}
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700}
+    .accent{background:var(--accent);color:#fff}
+    .muted{color:var(--muted)}
+
+    /* ---- ADICIONES: Razones, Tarjeta 3D, Sorpresa ---- */
+    .contador {
+      margin-top:14px;
+      font-weight:700;
+      color:var(--accent);
+      font-size:18px;
+    }
+
+    /* Razones */
+    .razon-box{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+    }
+    .razon-text{
+      font-size:16px;
+      text-align:center;
+      padding:12px;
+      border-radius:10px;
+      background:linear-gradient(180deg,#fff,#fff7fb);
+      box-shadow:0 8px 18px rgba(15,15,15,0.04);
+      max-width:680px;
+      margin:0 auto;
+    }
+    .btn-razon{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:700;background:var(--accent);color:#fff}
+
+    /* Tarjeta 3D (simple y compatible) */
+    .card3d-wrap{display:flex;justify-content:center; margin-top:12px}
+    .card3d{
+      width:320px;
+      height:200px;
+      perspective:1000px;
+    }
+    .card3d-inner{
+      position:relative;
+      width:100%;height:100%;
+      transform-style:preserve-3d;
+      transition:transform 0.8s;
+      cursor:pointer;
+      border-radius:12px;
+    }
+    .card3d:hover .card3d-inner{transform:rotateY(180deg)}
+    .card3d-face{
+      position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:700;
+      backface-visibility:hidden;
+      box-shadow:0 10px 30px rgba(15,15,15,0.06);
+      padding:18px;
+    }
+    .card3d-front{background:linear-gradient(135deg,var(--accent),#ffd0e6);color:#fff}
+    .card3d-back{background:var(--card);color:var(--accent);transform:rotateY(180deg);text-align:center}
+
+    /* Sorpresa flotante */
+    #sorpresaBox{
+      position:fixed; right:18px; bottom:18px;
+      background:var(--card); color:var(--text); padding:14px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.12);
+      display:none; max-width:260px; z-index:9999;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="logo">Te amo</div>
+      <div>
+        <div style="font-weight:800">Para mi niña la mas boita</div>
+        <div style="font-size:12px;color:var(--muted)">La pagina de nuestros recuerdos</div>
+      </div>
+    </div>
+
+    <nav aria-label="navegacion principal">
+      <button class="navbtn active" data-target="inicio">Inicio</button>
+      <button class="navbtn" data-target="historia">¿Por que te amo?</button>
+      <button class="navbtn" data-target="recuerdos">Recuerdos</button>
+      <button class="navbtn" data-target="cartas">Cartas</button>
+      <button class="navbtn" data-target="planes">Planes</button>
+      <!-- NUEVOS BOTONES -->
+      <button class="navbtn" data-target="razones">Razones</button>
+      <button class="navbtn" data-target="carta3d">Carta 3D</button>
+    </nav>
+
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn" id="darkToggle">Modo oscuro</button>
+      <button class="menu-btn" aria-label="abrir menu">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- INICIO (INTERFAZ PRINCIPAL) -->
+    <section id="inicio" class="card">
+      <div class="hero">
+        <div class="texto">
+          <h1>Para mi amor <span class="heart">❤</span></h1>
+          <p>Esto lo hice para que recuerdes lo mucho que te quiero. Cada seccion aqui guarda algo de nosotros: recuerdos, palabras, sueños y promesas.</p>
+          <p>2025 - 11 - 17</p>
+
+          <!-- CONTADOR AÑADIDO -->
+          <div class="contador" id="contador">Cargando contador...</div>
+
+          <div style="margin-top:16px;display:flex;gap:10px">
+            <button class="btn accent navbtn" data-target="cartas">Dejar una carta</button>
+            <button class="btn" onclick="sorpresaTotal()">Sorpresa ✨</button>
+          </div>
+        </div>
+
+        <div style="text-align:center">
+          <div style="font-size:48px; margin-top:8px; color:var(--accent)">Te amo</div>
+          <div style="margin-top:12px;color:var(--muted)">Abre las otras secciones y descubre detalles</div>
+        </div>
+      </div>
+    </section>
+
+  <section id="historia" class="card hidden">
+  <h2 style="font-size:28px;margin-bottom:4px">¿Por qué te amo?</h2>
+
+  <div style="margin-top:12px; line-height:1.65; text-align:justify; font-size:15px;">
+
+    <p>A veces me pregunto en qué momento exacto comenzó todo. No sé si fue cuando te escuché hablar por primera vez, cuando vi tu sonrisa sin que te dieras cuenta, o cuando tu mirada se cruzó con la mía y sentí una calma que jamás había sentido con nadie más. Lo único que sé es que, desde que llegaste, el mundo empezó a verse distinto… más suave, más bonito, más tú.</p>
+
+    <p>Me enamoré de ti sin planearlo. Fue algo que simplemente ocurrió: lento, silencioso, como quien no quiere admitir que está sintiendo algo grande. Me enamoré de tus detalles, de cómo hablas, de cómo te ríes, de la forma en que ves el mundo y haces que yo quiera verlo desde tus ojos. No fue un golpe repentino, fue una colección de momentos que se fueron sumando hasta que un día entendí que ya no había vuelta atrás: eras tú, siempre tú.</p>
+
+    <p>Te elegí porque nunca había conocido a alguien que hiciera tanto simplemente existiendo. Contigo todo es diferente: las conversaciones fluyen, el tiempo pasa rápido, y hasta los silencios se sienten cómodos. Te elegí porque me das paz y porque, al mismo tiempo, haces que mi alma despierte. Contigo puedo ser yo mismo, sin máscaras, sin miedo, sin pretender. Te elegí porque tu presencia me calma y tu esencia me enamora.</p>
+
+    <p>No lo supiste, pero yo te elegí desde el primer momento en que entendí que eras especial. Eres especial por cómo piensas, por cómo sientes, por tus fuerzas, por tus fragilidades, por todo lo que eres y por todo lo que ni siquiera sabes que eres. No existe otra persona como tú, y aunque la hubiera, aun así te elegiría a ti una y mil veces.</p>
+
+    <p>Y sí… pienso en ti todos los días. Pienso en ti cuando despierto, cuando me ocupo, cuando intento concentrarme, y cuando llega la noche y el silencio deja espacio para la verdad. Me imagino conversaciones contigo, planes, risas, momentos. Me sorprendo sonriendo como tonto cuando recuerdo algo tuyo. Es como si tu nombre hubiera quedado grabado en mi mente, repitiéndose suave, constante, inevitable.</p>
+
+    <p>Pienso en ti porque me haces sentir vivo, porque me inspiras, porque contigo imagino un futuro que no me da miedo, un futuro donde estás tú. Porque cuando te imagino, el mundo pesa menos. Porque, aunque suene simple, me encantas de una manera que ni yo entiendo, de una forma que me supera.</p>
+
+    <p>No sé si fue suerte, destino o casualidad… pero estoy agradecido. Agradecido por cada risa, cada palabra, cada momento en el que me has dejado conocerte un poquito más. Agradecido porque llegaste sin avisar, sin ruido, y aun así te quedaste, y eso lo cambió todo.</p>
+
+    <p>Por eso me enamoré de ti.  
+    Por eso te elegí.  
+    Porque eres esa persona que, sin hacer nada extraordinario, transformó mis días, mis pensamientos y mi forma de ver la vida.</p>
+
+    <p><strong>Y si algún día te preguntas por qué te quiero tanto, recuerda esto: te quiero porque eres tú, y eso es más que suficiente.</strong></p>
+
+  </div>
+
+  <div style="margin-top:22px; display:flex; justify-content:flex-end;">
+    <button class="btn accent" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+      Volver arriba ↑
+    </button>
+  </div>
+</section>
+
+
+    <!-- RECUERDOS -->
+   <section id="recuerdos" class="card hidden">
+  <h2>Recuerdos</h2>
+  <p class="muted">MI NIÑA LA MAS HERMOSA</p>
+
+  <div class="gallery" style="margin-top:12px">
+    <img src="imagenes/imagen_1.JPG" alt="Recuerdo 1" class="photo">
+    <img src="imagenes/imagen_2.JPG" alt="Recuerdo 2" class="photo">
+    <img src="imagenes/imagen_3.JPG" alt="Recuerdo 3" class="photo">
+    <img src="imagenes/imagen_5.JPG" alt="Recuerdo 5" class="photo">
+    <img src="imagenes/imagen_6.JPG" alt="Recuerdo 6" class="photo">
+  </div>
+</section>
+
+    <!-- CARTAS -->
+    <section id="cartas" class="card hidden">
+  <h2>Cartas para ti</h2>
+  <p class="muted">Escribe cosas que quieras que yo lea o que yo te haya escrito</p>
+
+  <div class="letters" style="margin-top:12px">
+    <div>
+      <div class="letter">
+        <h3>De mi para ti</h3>
+        <p>Mi amor, cada dia a tu lado es un regalo. Gracias por ser como eres.</p>
+      </div>
+
+      <div id="inbox" style="margin-top:12px"></div>
+    </div>
+
+    <aside>
+      <div class="card" style="padding:12px">
+        <h4>Deja tu carta</h4>
+        <textarea id="newLetter" rows="6" style="width:100%;padding:8px;border-radius:8px;border:1px solid #eee"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn accent" onclick="saveLetter()">Guardar</button>
+          <button class="btn" onclick="document.getElementById('newLetter').value=''">Limpiar</button>
+        </div>
+          </div>
+    </aside>
+  </div>
+</section>
+
+    <!-- PLANES -->
+    <section id="planes" class="card hidden">
+  <h2>Planes juntos</h2>
+  <p class="muted">Sueños y metas que quiero contigo</p>
+
+  <div class="plans" style="margin-top:12px">
+    <ul>
+      <li>Viajar a un lugar nuevo juntos</li>
+      <li>Hacer una cena especial cada mes</li>
+      <li>Apoyarnos mutuamente en nuestros proyectos</li>
+      <li>Cumplir metas juntos</li>
+      <li>Crear recuerdos inolvidables</li>
+    </ul>
+  </div>
+</section>
+
+  <!-- NUEVA SECCIÓN: RAZONES -->
+  <section id="razones" class="card hidden">
+    <h2>50 razones por las que te amo</h2>
+    <div class="razon-box" style="margin-top:12px">
+      <div id="razonTexto" class="razon-text">Pulsa "Siguiente razón" para ver una.</div>
+      <button class="btn-razon" onclick="nuevaRazon()">Siguiente razón</button>
+    </div>
+  </section>
+
+  <!-- NUEVA SECCIÓN: CARTA 3D -->
+  <section id="carta3d" class="card hidden">
+    <h2>Carta</h2>
+    <div class="card3d-wrap">
+      <div class="card3d" onclick="/* click intentionally empty to allow hover flip */">
+        <div class="card3d-inner">
+          <div class="card3d-face card3d-front">Ábreme ❤️</div>
+          <div class="card3d-face card3d-back">Eres lo mejor que me ha pasado.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <footer>
+    <div class="small">Creado con ♥ para la persona que ilumina tus dias.</div>
+  </footer>
+
+  <!-- Mobile floating nav -->
+  <div class="mobile-nav">
+    <button class="menu-btn" onclick="openMobileMenu()">☰</button>
+  </div>
+
+  <!-- Sorpresa flotante -->
+  <div id="sorpresaBox"></div>
+
+  <script>
+    // Navegacion SPA (funciona con los nuevos botones)
+    const navButtons = document.querySelectorAll('.navbtn');
+    navButtons.forEach(b => b.addEventListener('click', (e)=>{
+      const target = e.currentTarget.dataset.target;
+      showSection(target);
+    }));
+
+    function showSection(id){
+      document.querySelectorAll('main section').forEach(s => s.classList.add('hidden'));
+      const el = document.getElementById(id);
+      if(el) el.classList.remove('hidden');
+
+      navButtons.forEach(nb => nb.classList.toggle('active', nb.dataset.target===id));
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    // Cartas - almacenamiento local
+    function saveLetter(){
+      const text = document.getElementById('newLetter').value.trim();
+      if(!text) return alert('Escribe algo bonito antes de guardar 😊');
+      const letters = JSON.parse(localStorage.getItem('cartas')||'[]');
+      letters.unshift({text, date:new Date().toISOString()});
+      localStorage.setItem('cartas', JSON.stringify(letters));
+      document.getElementById('newLetter').value='';
+      renderLetters();
+    }
+    function renderLetters(){
+      const container = document.getElementById('inbox');
+      container.innerHTML='';
+      const letters = JSON.parse(localStorage.getItem('cartas')||'[]');
+      if(letters.length===0){container.innerHTML='<div class="small">Aun no hay cartas guardadas. ¡Deja la primera!</div>';return}
+      letters.forEach(l=>{
+        const d = new Date(l.date);
+        const div = document.createElement('div');
+        div.className='letter';
+        div.style.marginTop='8px';
+        div.innerHTML = `<div style="font-size:13px;color:var(--muted)">${d.toLocaleString()}</div><div style="margin-top:8px">${escapeHtml(l.text)}</div>`;
+        container.appendChild(div);
+      })
+    }
+    function escapeHtml(str){
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+    }
+
+    // Dark mode toggle (fixed & persistent)
+    let dark = localStorage.getItem('darkMode') === 'true';
+    const applyTheme = () => {
+      if(dark){
+        document.documentElement.style.setProperty('--bg','#0b0b12');
+        document.documentElement.style.setProperty('--card','#0f1720');
+        document.documentElement.style.setProperty('--accent','#ff99c2');
+        document.documentElement.style.setProperty('--muted','#bfc4c9');
+        document.body.style.background='linear-gradient(120deg,#071021 0%, #06121a 100%)';
+      } else {
+        document.documentElement.style.setProperty('--bg','#fff7fb');
+        document.documentElement.style.setProperty('--card','#ffffff');
+        document.documentElement.style.setProperty('--accent','#ff6fa3');
+        document.documentElement.style.setProperty('--muted','#6b6b6b');
+        document.body.style.background='linear-gradient(120deg,#fff7fb 0%, #f7f9ff 100%)';
+      }
+      localStorage.setItem('darkMode', dark);
+    };
+    document.getElementById('darkToggle').addEventListener('click', ()=>{
+      dark = !dark;
+      applyTheme();
+    });
+    // apply initial theme
+    applyTheme();
+
+    // Confetti (corazones rojos)
+   function toggleConfetti(){
+    for(let i=0;i<30;i++){
+      const c = document.createElement('div');
+      c.textContent = '❤';
+      c.style.position='fixed';
+      c.style.left = Math.random()*100+'%';
+      c.style.top = '-20px';
+      c.style.fontSize = (8+Math.random()*24)+'px';
+      c.style.opacity = 0.9;
+      c.style.pointerEvents='none';
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      c.style.color = 'red';
+      document.body.appendChild(c);
+
+      const end = 100+Math.random()*60;
+      c.animate(
+        [{ transform:'translateY(0px)' },{ transform:`translateY(${end}vh)` }],
+        { duration:2000+Math.random()*1200, iterations:1, easing:'cubic-bezier(.2,.8,.2,1)' }
+      );
+
+      setTimeout(()=>c.remove(),3200);
+    }
+  }
+
+    // Sorpresas aleatorias (mini-sorpresas)
+    const sorpresas = [
+      "Pienso en ti más de lo que imaginas.",
+      "Eres mi pensamiento favorito del día.",
+      "Tu sonrisa puede salvar cualquier día.",
+      "Gracias por existir en mi vida.",
+      "Me haces muy feliz, amor.",
+      "Eres mi persona favorita."
+    ];
+
+    function mostrarSorpresa(){
+      const box = document.getElementById('sorpresaBox');
+      box.textContent = sorpresas[Math.floor(Math.random()*sorpresas.length)];
+      box.style.display = 'block';
+      setTimeout(()=>box.style.display='none', 3500);
+    }
+
+    // función combinada para el botón Sorpresa (corazones + mensaje)
+    function sorpresaTotal(){
+      toggleConfetti();
+      mostrarSorpresa();
+    }
+
+    // CONTADOR de amor desde 2025-11-17
+    const inicioAmor = new Date("2025-11-17T00:00:00");
+    function actualizarContador(){
+      const hoy = new Date();
+      let diff = Math.max(0, hoy - inicioAmor);
+
+      const dias = Math.floor(diff / (1000*60*60*24));
+      const horas = Math.floor((diff / (1000*60*60)) % 24);
+      const minutos = Math.floor((diff / (1000*60)) % 60);
+      const segundos = Math.floor((diff / 1000) % 60);
+
+      document.getElementById('contador').textContent =
+        `${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos amándote 💖`;
+    }
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
+
+    // RAZONES (lista y función)
+    const razones = [
+      "Eres mi lugar seguro.",
+      "Tu voz me calma.",
+      "Tu mirada me derrite.",
+      "Me haces sentir amado.",
+      "Siempre piensas en mí.",
+      "Eres hermosa por dentro y por fuera.",
+      "Tu risa mejora mi día.",
+      "Eres inteligente y fuerte.",
+      "Me motivas a ser mejor.",
+      "No existe nadie como tú.",
+      "Amo tu forma de hablar.",
+      "Amo cómo me tratas.",
+      "Amo tus abrazos.",
+      "Amo tus ocurrencias.",
+      "Amo cómo me haces reír.",
+      "Siempre estás en mi mente.",
+      "Me haces sentir especial.",
+      "Eres mi inspiración.",
+      "Eres mi paz.",
+      "Eres mi luz.",
+      "Tu cariño es único.",
+      "Tu sonrisa es mi debilidad.",
+      "Tu personalidad es preciosa.",
+      "Me encanta escucharte.",
+      "Me haces sentir importante.",
+      "Tenemos una conexión única.",
+      "Me encanta cuidarte.",
+      "Eres mi mejor coincidencia.",
+      "Eres más de lo que soñé.",
+      "Eres mi razón favorita.",
+      "Cada día contigo es mejor.",
+      "Mi corazón te reconoce.",
+      "Me encanta cómo eres.",
+      "Tu forma de amar es perfecta.",
+      "Tu compañía es todo para mí.",
+      "Amo tus detalles.",
+      "Amo tu energía.",
+      "Me haces feliz sin intentarlo.",
+      "Me siento completo contigo.",
+      "Simplemente… tú.",
+      "Amo tu dulzura.",
+      "Amo cómo me hablas.",
+      "Eres memorable.",
+      "Eres especial.",
+      "Amo cómo sonríes conmigo.",
+      "Amo cómo me miras.",
+      "Eres mi bendición.",
+      "Te amo por ser tú.",
+      "Te amo porque te elijo cada día."
+    ];
+
+    function nuevaRazon(){
+      const r = razones[Math.floor(Math.random()*razones.length)];
+      document.getElementById('razonTexto').textContent = r;
+    }
+
+    // Mobile menu fallback
+    function openMobileMenu(){
+      const list = Array.from(document.querySelectorAll('.navbtn')).map(b=>b.dataset.target + ':' + b.textContent).join('\n');
+      const choice = prompt('Ir a (escribe la seccion):\n' + list + '\nEj: inicio');
+      if(choice) showSection(choice.trim());
+    }
+
+    // Init
+    renderLetters();
+    // Show inicio por defecto
+    showSection('inicio');
+
+  </script>
+</body>
+</html>
